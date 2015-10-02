@@ -7,16 +7,17 @@
 //
 
 #import "AppDelegate.h"
+#import "AppDependencies.h"
 
 @interface AppDelegate ()
-
+@property (strong, nonatomic) AppDependencies *dependencies;
 @end
 
 @implementation AppDelegate
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    self.dependencies = [AppDependencies new];
+    [self.dependencies configureDependenciesFor:self];
     return YES;
 }
 
