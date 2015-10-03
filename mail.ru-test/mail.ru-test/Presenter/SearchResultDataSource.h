@@ -11,4 +11,7 @@
 
 @interface SearchResultDataSource : NSObject<TwitterSearchResultTableDataSource>
 
+- (void)addTweets:(NSArray*)tweets;
+- (void)resetTweets;
+
 @end

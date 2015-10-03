@@ -13,6 +13,9 @@ typedef void (^ErrorTweetsSearchCallback)(NSError *error);
 
 @protocol TwitterDataSource <NSObject>
 
-- (void)searchTweetsByHashtag:(NSString*)hashtag successCallback:(SuccessTweetsSearchCallback)successCallback errorCallback:(ErrorTweetsSearchCallback)errorCallback;
+- (void)searchTweetsByHashtag:(NSString*)hashtag
+                      sinceID:(NSString*)sinceID
+              successCallback:(SuccessTweetsSearchCallback)successCallback
+                errorCallback:(ErrorTweetsSearchCallback)errorCallback;
 
 @end

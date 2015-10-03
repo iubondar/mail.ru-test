@@ -8,9 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import "TwitterSearchResultTableDataSource.h"
+#import "SearchResultsUIEventHandler.h"
 
 @protocol TwitterSearchResultsUI <NSObject>
 
 @property (nonatomic, weak) id<TwitterSearchResultTableDataSource> searchResultDataSource;
+@property (nonatomic, weak) id<SearchResultsUIEventHandler> eventHandler;
+
+- (void)showNewTweets;
 
 @end

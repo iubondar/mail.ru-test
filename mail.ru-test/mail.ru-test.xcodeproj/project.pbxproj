@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5CC06F6C1BBFB325008DD0A5 /* MockTwitterDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC06F6B1BBFB325008DD0A5 /* MockTwitterDataManager.m */; settings = {ASSET_TAGS = (); }; };
+		5CC06F6F1BBFB3F3008DD0A5 /* TweetSummary.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC06F6E1BBFB3F3008DD0A5 /* TweetSummary.m */; settings = {ASSET_TAGS = (); }; };
+		5CC06F741BBFD2EB008DD0A5 /* TweetUIData.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC06F731BBFD2EB008DD0A5 /* TweetUIData.m */; settings = {ASSET_TAGS = (); }; };
 		731E50EF1BBEEAE200032FBD /* SearchResultDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 731E50EE1BBEEAE200032FBD /* SearchResultDataSource.m */; settings = {ASSET_TAGS = (); }; };
 		73C25C0B1BBEC9BA003D5F12 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 73C25C0A1BBEC9BA003D5F12 /* main.m */; };
 		73C25C0E1BBEC9BA003D5F12 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 73C25C0D1BBEC9BA003D5F12 /* AppDelegate.m */; };
@@ -21,6 +24,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5CC06F6A1BBFB325008DD0A5 /* MockTwitterDataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MockTwitterDataManager.h; path = DataManager/MockTwitterDataManager.h; sourceTree = "<group>"; };
+		5CC06F6B1BBFB325008DD0A5 /* MockTwitterDataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MockTwitterDataManager.m; path = DataManager/MockTwitterDataManager.m; sourceTree = "<group>"; };
+		5CC06F6D1BBFB3F3008DD0A5 /* TweetSummary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TweetSummary.h; path = Entity/TweetSummary.h; sourceTree = "<group>"; };
+		5CC06F6E1BBFB3F3008DD0A5 /* TweetSummary.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TweetSummary.m; path = Entity/TweetSummary.m; sourceTree = "<group>"; };
+		5CC06F711BBFCDB1008DD0A5 /* SearchResultsUIEventHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchResultsUIEventHandler.h; path = Presenter/SearchResultsUIEventHandler.h; sourceTree = "<group>"; };
+		5CC06F721BBFD2EB008DD0A5 /* TweetUIData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetUIData.h; sourceTree = "<group>"; };
+		5CC06F731BBFD2EB008DD0A5 /* TweetUIData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetUIData.m; sourceTree = "<group>"; };
 		731E50EB1BBEE8A600032FBD /* TwitterSearchResultsUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterSearchResultsUI.h; sourceTree = "<group>"; };
 		731E50EC1BBEE90700032FBD /* TwitterSearchResultTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterSearchResultTableDataSource.h; sourceTree = "<group>"; };
 		731E50ED1BBEEAE200032FBD /* SearchResultDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchResultDataSource.h; path = Presenter/SearchResultDataSource.h; sourceTree = "<group>"; };
@@ -59,6 +69,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5CC06F701BBFB3FC008DD0A5 /* Entity */ = {
+			isa = PBXGroup;
+			children = (
+				5CC06F6D1BBFB3F3008DD0A5 /* TweetSummary.h */,
+				5CC06F6E1BBFB3F3008DD0A5 /* TweetSummary.m */,
+			);
+			name = Entity;
+			path = ..;
+			sourceTree = "<group>";
+		};
 		73C25BFD1BBEC9BA003D5F12 = {
 			isa = PBXGroup;
 			children = (
@@ -111,6 +131,8 @@
 		73C25C261BBED542003D5F12 /* SearchResultView */ = {
 			isa = PBXGroup;
 			children = (
+				5CC06F721BBFD2EB008DD0A5 /* TweetUIData.h */,
+				5CC06F731BBFD2EB008DD0A5 /* TweetUIData.m */,
 				731E50EB1BBEE8A600032FBD /* TwitterSearchResultsUI.h */,
 				731E50EC1BBEE90700032FBD /* TwitterSearchResultTableDataSource.h */,
 				73C25C291BBED542003D5F12 /* ViewController.h */,
@@ -137,6 +159,8 @@
 			isa = PBXGroup;
 			children = (
 				73C25C3C1BBEDF01003D5F12 /* TwitterDataSource.h */,
+				5CC06F6A1BBFB325008DD0A5 /* MockTwitterDataManager.h */,
+				5CC06F6B1BBFB325008DD0A5 /* MockTwitterDataManager.m */,
 			);
 			name = TwitterService;
 			path = ..;
@@ -145,6 +169,7 @@
 		73C25C371BBEDD91003D5F12 /* Presenter */ = {
 			isa = PBXGroup;
 			children = (
+				5CC06F711BBFCDB1008DD0A5 /* SearchResultsUIEventHandler.h */,
 				73C25C391BBEDDFC003D5F12 /* SearchResultPresenter.h */,
 				73C25C3A1BBEDDFC003D5F12 /* SearchResultPresenter.m */,
 				731E50ED1BBEEAE200032FBD /* SearchResultDataSource.h */,
@@ -158,6 +183,7 @@
 			isa = PBXGroup;
 			children = (
 				73C25C321BBEDB27003D5F12 /* TwitterService */,
+				5CC06F701BBFB3FC008DD0A5 /* Entity */,
 				73C25C301BBEDA02003D5F12 /* Interactor */,
 				73C25C371BBEDD91003D5F12 /* Presenter */,
 				73C25C261BBED542003D5F12 /* SearchResultView */,
@@ -197,6 +223,7 @@
 				TargetAttributes = {
 					73C25C051BBEC9BA003D5F12 = {
 						CreatedOnToolsVersion = 7.0;
+						DevelopmentTeam = X4M78P3747;
 					};
 				};
 			};
@@ -237,13 +264,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				73C25C2B1BBED542003D5F12 /* SearchResultCell.m in Sources */,
+				5CC06F741BBFD2EB008DD0A5 /* TweetUIData.m in Sources */,
 				73C25C3B1BBEDDFC003D5F12 /* SearchResultPresenter.m in Sources */,
 				73C25C0E1BBEC9BA003D5F12 /* AppDelegate.m in Sources */,
 				731E50EF1BBEEAE200032FBD /* SearchResultDataSource.m in Sources */,
+				5CC06F6F1BBFB3F3008DD0A5 /* TweetSummary.m in Sources */,
 				73C25C2C1BBED542003D5F12 /* ViewController.m in Sources */,
 				73C25C0B1BBEC9BA003D5F12 /* main.m in Sources */,
 				73C25C361BBEDC28003D5F12 /* TwitterSearchInteractor.m in Sources */,
 				73C25C2F1BBED907003D5F12 /* AppDependencies.m in Sources */,
+				5CC06F6C1BBFB325008DD0A5 /* MockTwitterDataManager.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,11 +386,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = BrandAsset;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "mail.ru-test/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.bondar.ivan.mail-ru-test";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -369,11 +402,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = BrandAsset;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "mail.ru-test/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.bondar.ivan.mail-ru-test";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};

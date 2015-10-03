@@ -10,6 +10,7 @@
 
 @protocol TwitterSearchOutput <NSObject>
 
+- (void)resetSearchResults;
 - (void)tweetsFound:(NSArray*)tweetSummaries;
 
 @end

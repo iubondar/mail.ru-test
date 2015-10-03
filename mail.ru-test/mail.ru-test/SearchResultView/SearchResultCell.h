@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TweetUIData.h"
 
 @interface SearchResultCell : UITableViewCell
+
+- (void)setTweetUIData:(TweetUIData*)tweetUIData;
 
 @end

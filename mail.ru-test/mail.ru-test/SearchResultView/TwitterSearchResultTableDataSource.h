@@ -7,7 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TweetUIData.h"
 
 @protocol TwitterSearchResultTableDataSource <NSObject>
+
+- (NSInteger)totalTweetsCount;
+
+- (TweetUIData*)tweetUIDataForRow:(NSInteger)rowNumber;
 
 @end

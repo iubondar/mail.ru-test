@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -23,7 +24,7 @@
                                     <constraint firstAttribute="height" constant="44" id="LzQ-JI-5Kp"/>
                                 </constraints>
                                 <color key="barTintColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="twitter" returnKeyType="search" enablesReturnKeyAutomatically="YES"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="alphabet" keyboardAppearance="light" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                 <scopeButtonTitles>
                                     <string>Title</string>
                                     <string>Title</string>
@@ -32,7 +33,7 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="mQp-dd-1FH"/>
                                 </connections>
                             </searchBar>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="rKw-RP-mPQ" userLabel="Search results">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="rKw-RP-mPQ" userLabel="Search results">
                                 <rect key="frame" x="0.0" y="64" width="600" height="536"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
@@ -42,7 +43,48 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="sDe-PZ-hvI" id="93s-t0-ndB">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43"/>
                                             <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12-09-2015" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SOg-1r-CZf" userLabel="Date">
+                                                    <rect key="frame" x="8" y="8" width="68" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="Ein-hC-sZD"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ivan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2W2-Ux-bYb" userLabel="User">
+                                                    <rect key="frame" x="568" y="8" width="24" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="dJ8-mD-kq5"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello there! It's coldy today, brrr...." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wCy-ia-vmP" userLabel="Text">
+                                                    <rect key="frame" x="8" y="28" width="584" height="7"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottomMargin" secondItem="wCy-ia-vmP" secondAttribute="bottom" id="7tK-vQ-ZgR"/>
+                                                <constraint firstItem="SOg-1r-CZf" firstAttribute="leading" secondItem="93s-t0-ndB" secondAttribute="leadingMargin" id="Afn-g1-KL1"/>
+                                                <constraint firstItem="wCy-ia-vmP" firstAttribute="top" secondItem="SOg-1r-CZf" secondAttribute="bottom" id="bPL-Iz-Bgl"/>
+                                                <constraint firstItem="2W2-Ux-bYb" firstAttribute="top" secondItem="93s-t0-ndB" secondAttribute="topMargin" id="iUN-ia-nWJ"/>
+                                                <constraint firstItem="wCy-ia-vmP" firstAttribute="leading" secondItem="93s-t0-ndB" secondAttribute="leadingMargin" id="mDp-2k-KAb"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="2W2-Ux-bYb" secondAttribute="trailing" id="o5d-VK-CYj"/>
+                                                <constraint firstItem="SOg-1r-CZf" firstAttribute="top" secondItem="93s-t0-ndB" secondAttribute="topMargin" id="qg6-Ja-ceZ"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="wCy-ia-vmP" secondAttribute="trailing" id="xO5-t2-65y"/>
+                                            </constraints>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="dateLabel" destination="SOg-1r-CZf" id="dhL-xL-hDi"/>
+                                            <outlet property="statusLabel" destination="wCy-ia-vmP" id="Lkg-it-zFn"/>
+                                            <outlet property="userLabel" destination="2W2-Ux-bYb" id="A0F-r1-X28"/>
+                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -62,6 +104,10 @@
                             <constraint firstItem="rKw-RP-mPQ" firstAttribute="top" secondItem="xm1-xj-SWD" secondAttribute="bottom" id="wFm-3Z-fWD"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="searchBar" destination="xm1-xj-SWD" id="pHk-l4-uT4"/>
+                        <outlet property="searchResultsTable" destination="rKw-RP-mPQ" id="Mmd-xy-BM5"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

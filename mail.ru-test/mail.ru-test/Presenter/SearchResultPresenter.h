@@ -10,8 +10,9 @@
 #import "TwitterSearchOutput.h"
 #import "TwitterSearchInput.h"
 #import "TwitterSearchResultsUI.h"
+#import "SearchResultsUIEventHandler.h"
 
-@interface SearchResultPresenter : NSObject <TwitterSearchOutput>
+@interface SearchResultPresenter : NSObject <TwitterSearchOutput, SearchResultsUIEventHandler>
 
 @property (nonatomic, strong) id<TwitterSearchInput> searchInput;
 @property (nonatomic, strong) id<TwitterSearchResultsUI> searchResultsUI;

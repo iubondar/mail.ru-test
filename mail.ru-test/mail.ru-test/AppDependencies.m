@@ -7,11 +7,36 @@
 //
 
 #import "AppDependencies.h"
+#import "MockTwitterDataManager.h"
+#import "TwitterSearchInteractor.h"
+#import "SearchResultPresenter.h"
+#import "ViewController.h"
+
+@interface AppDependencies() {
+    SearchResultPresenter *presenter;
+    MockTwitterDataManager *mockDataManager;
+}
+
+@end
 
 @implementation AppDependencies
 
 - (void)configureDependenciesFor:(AppDelegate *)appDelegate {
     
+    // create/obtain objects
+    ViewController *searchResultVC = (ViewController*)[appDelegate.window rootViewController];
+    TwitterSearchInteractor *interactor = [TwitterSearchInteractor new];
+    mockDataManager = [MockTwitterDataManager new];
+    presenter = [SearchResultPresenter new];
+    
+    // configure dependencies
+    interactor.twitterDataSource = mockDataManager;
+    interactor.output = presenter;
+    
+    presenter.searchInput = interactor;
+    presenter.searchResultsUI = searchResultVC;
+    
+    searchResultVC.eventHandler = presenter;
 }
 
 @end

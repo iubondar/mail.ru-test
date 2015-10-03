@@ -27,18 +27,28 @@
 
 - (void)searchForUserInput:(NSString*)inputString {
     
-    if ([inputString isEqualToString:self.currentSearchString]) return;
-    
     NSAssert(self.twitterDataSource != nil, @"Twitter data source should be set");
     NSAssert(self.output != nil, @"Output for search results should be set");
     
-    // load new query from first page
+    if (inputString.length == 0) {
+        [self.output resetSearchResults];
+        self.currentSearchString = nil;
+        return;
+    }
+    
+    if ([inputString isEqualToString:self.currentSearchString]) return;
+    
+    [self queryTweetsDataFromFirstPageWithInputString:inputString];
+}
+
+- (void)queryTweetsDataFromFirstPageWithInputString:(NSString*)inputString {
     [self resetPageNumber];
     self.currentSearchString = inputString;
     
-    // TODO: reset current tweets in vc datasource
+    [self.output resetSearchResults];
     
     [self.twitterDataSource searchTweetsByHashtag:self.currentSearchString
+                                          sinceID:nil
                                   successCallback:^(NSArray *searchResults) {
                                       [self.output tweetsFound:searchResults];
                                   } errorCallback:^(NSError *error) {
