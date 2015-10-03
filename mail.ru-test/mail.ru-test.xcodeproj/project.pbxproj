@@ -10,6 +10,7 @@
 		5CC06F6C1BBFB325008DD0A5 /* MockTwitterDataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC06F6B1BBFB325008DD0A5 /* MockTwitterDataManager.m */; settings = {ASSET_TAGS = (); }; };
 		5CC06F6F1BBFB3F3008DD0A5 /* TweetSummary.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC06F6E1BBFB3F3008DD0A5 /* TweetSummary.m */; settings = {ASSET_TAGS = (); }; };
 		5CC06F741BBFD2EB008DD0A5 /* TweetUIData.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC06F731BBFD2EB008DD0A5 /* TweetUIData.m */; settings = {ASSET_TAGS = (); }; };
+		5CC06F771BBFFF6D008DD0A5 /* FittingSizeLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC06F761BBFFF6D008DD0A5 /* FittingSizeLabel.m */; settings = {ASSET_TAGS = (); }; };
 		731E50EF1BBEEAE200032FBD /* SearchResultDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 731E50EE1BBEEAE200032FBD /* SearchResultDataSource.m */; settings = {ASSET_TAGS = (); }; };
 		73C25C0B1BBEC9BA003D5F12 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 73C25C0A1BBEC9BA003D5F12 /* main.m */; };
 		73C25C0E1BBEC9BA003D5F12 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 73C25C0D1BBEC9BA003D5F12 /* AppDelegate.m */; };
@@ -31,6 +32,8 @@
 		5CC06F711BBFCDB1008DD0A5 /* SearchResultsUIEventHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchResultsUIEventHandler.h; path = Presenter/SearchResultsUIEventHandler.h; sourceTree = "<group>"; };
 		5CC06F721BBFD2EB008DD0A5 /* TweetUIData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TweetUIData.h; sourceTree = "<group>"; };
 		5CC06F731BBFD2EB008DD0A5 /* TweetUIData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TweetUIData.m; sourceTree = "<group>"; };
+		5CC06F751BBFFF6D008DD0A5 /* FittingSizeLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FittingSizeLabel.h; sourceTree = "<group>"; };
+		5CC06F761BBFFF6D008DD0A5 /* FittingSizeLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FittingSizeLabel.m; sourceTree = "<group>"; };
 		731E50EB1BBEE8A600032FBD /* TwitterSearchResultsUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterSearchResultsUI.h; sourceTree = "<group>"; };
 		731E50EC1BBEE90700032FBD /* TwitterSearchResultTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterSearchResultTableDataSource.h; sourceTree = "<group>"; };
 		731E50ED1BBEEAE200032FBD /* SearchResultDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchResultDataSource.h; path = Presenter/SearchResultDataSource.h; sourceTree = "<group>"; };
@@ -77,6 +80,17 @@
 			);
 			name = Entity;
 			path = ..;
+			sourceTree = "<group>";
+		};
+		5CC06F781BBFFFB6008DD0A5 /* Table cell */ = {
+			isa = PBXGroup;
+			children = (
+				73C25C271BBED542003D5F12 /* SearchResultCell.h */,
+				73C25C281BBED542003D5F12 /* SearchResultCell.m */,
+				5CC06F751BBFFF6D008DD0A5 /* FittingSizeLabel.h */,
+				5CC06F761BBFFF6D008DD0A5 /* FittingSizeLabel.m */,
+			);
+			name = "Table cell";
 			sourceTree = "<group>";
 		};
 		73C25BFD1BBEC9BA003D5F12 = {
@@ -137,8 +151,7 @@
 				731E50EC1BBEE90700032FBD /* TwitterSearchResultTableDataSource.h */,
 				73C25C291BBED542003D5F12 /* ViewController.h */,
 				73C25C2A1BBED542003D5F12 /* ViewController.m */,
-				73C25C271BBED542003D5F12 /* SearchResultCell.h */,
-				73C25C281BBED542003D5F12 /* SearchResultCell.m */,
+				5CC06F781BBFFFB6008DD0A5 /* Table cell */,
 			);
 			name = SearchResultView;
 			sourceTree = "<group>";
@@ -272,6 +285,7 @@
 				73C25C2C1BBED542003D5F12 /* ViewController.m in Sources */,
 				73C25C0B1BBEC9BA003D5F12 /* main.m in Sources */,
 				73C25C361BBEDC28003D5F12 /* TwitterSearchInteractor.m in Sources */,
+				5CC06F771BBFFF6D008DD0A5 /* FittingSizeLabel.m in Sources */,
 				73C25C2F1BBED907003D5F12 /* AppDependencies.m in Sources */,
 				5CC06F6C1BBFB325008DD0A5 /* MockTwitterDataManager.m in Sources */,
 			);

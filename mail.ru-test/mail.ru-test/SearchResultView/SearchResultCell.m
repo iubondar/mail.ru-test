@@ -16,6 +16,17 @@
 
 @implementation SearchResultCell
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    [self clearUIData];
+}
+
+- (void)clearUIData {
+    self.userLabel.text = @"";
+    self.statusLabel.text = @"";
+    self.dateLabel.text = @"";
+}
+
 - (void)setTweetUIData:(TweetUIData*)tweetUIData {
     self.userLabel.text = tweetUIData.userName;
     self.statusLabel.text = tweetUIData.statusText;

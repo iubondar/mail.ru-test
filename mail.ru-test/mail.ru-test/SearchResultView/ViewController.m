@@ -10,6 +10,7 @@
 #import "SearchResultCell.h"
 
 static NSString * const kSearchResultCellIdentifier = @"SearchResultCell";
+static CGFloat const kCellSeparatorHeight = 1;
 
 @interface ViewController () <UISearchBarDelegate, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *searchResultsTable;
@@ -51,12 +52,44 @@ static NSString * const kSearchResultCellIdentifier = @"SearchResultCell";
     [self.searchResultsTable reloadData];
 }
 
+- (BOOL)isLandscapeOrientation {
+    return UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation);
+}
+
+- (BOOL)isDeviceIPad {
+    return [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad;
+}
+
 #pragma mark - UITableViewDelegate
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static SearchResultCell *sizingCell = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sizingCell = [self.searchResultsTable dequeueReusableCellWithIdentifier:kSearchResultCellIdentifier];
+    });
     
-    // TODO: height by content
-    return 50;
+    [sizingCell setTweetUIData:[self.searchResultDataSource tweetUIDataForRow:indexPath.row]];
+    return [self calculateHeightForConfiguredSizingCell:sizingCell];
+}
+
+- (CGFloat)calculateHeightForConfiguredSizingCell:(UITableViewCell *)sizingCell {
+    sizingCell.bounds = CGRectMake(0.0f, 0.0f, CGRectGetWidth(self.searchResultsTable.frame), CGRectGetHeight(sizingCell.bounds));
+    
+    [sizingCell setNeedsLayout];
+    [sizingCell layoutIfNeeded];
+    
+    CGSize size = [sizingCell.contentView systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+    
+    return size.height + kCellSeparatorHeight;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self isLandscapeOrientation] || [self isDeviceIPad]) {
+        return 55;
+    } else {
+        return 71;
+    }
 }
 
 #pragma mark - UITableViewDataSource
