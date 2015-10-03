@@ -10,7 +10,10 @@
 
 @protocol TwitterSearchInput <NSObject>
 
+@required
 - (void)searchForUserInput:(NSString*)inputString;
 - (void)searchMore;
 
+@optional
+- (void)searchUIIsReadyForPresentation;
 @end

@@ -15,6 +15,8 @@
 @property (nonatomic, weak) id<TwitterSearchResultTableDataSource> searchResultDataSource;
 @property (nonatomic, weak) id<SearchResultsUIEventHandler> eventHandler;
 
+- (void)startEditSearchString;
 - (void)showNewTweets;
+- (void)showModalDialogWithTitle:(NSString*)title message:(NSString*)message;
 
 @end

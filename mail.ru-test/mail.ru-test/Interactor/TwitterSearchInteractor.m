@@ -31,6 +31,14 @@
     NSAssert(self.output != nil, @"Output for search results should be set");
 }
 
+- (void)searchUIIsReadyForPresentation {
+    [self checkAssertions];
+    
+    [self.twitterDataSource connectToTwitterWithSuccess:nil error:^(NSError *error) {
+        [self processError:error];
+    }];
+}
+
 - (void)searchForUserInput:(NSString*)inputString {
     
     [self checkAssertions];
@@ -85,8 +93,7 @@
 }
 
 - (void)processError:(NSError*)error {
-    // TODO: show message to user
-    NSLog(@"%@", error);
+    [self.output errorOccured:error];
 }
 
 #pragma mark - Private

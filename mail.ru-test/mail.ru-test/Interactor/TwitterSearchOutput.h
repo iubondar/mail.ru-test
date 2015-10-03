@@ -12,5 +12,6 @@
 
 - (void)resetSearchResults;
 - (void)tweetsFound:(NSArray*)tweetSummaries;
+- (void)errorOccured:(NSError*)error;
 
 @end

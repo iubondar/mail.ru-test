@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Mock data.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 		<key>mail.ru-test.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -12,6 +17,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>5CC06F851BC062FA008DD0A5</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>73C25C051BBEC9BA003D5F12</key>
 		<dict>
 			<key>primary</key>

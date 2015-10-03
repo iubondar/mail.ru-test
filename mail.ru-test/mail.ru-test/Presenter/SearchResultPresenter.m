@@ -61,7 +61,9 @@
         [tweetUIDataList addObject:tweetUIData];
     }
     [self.searchResultDataSource addTweets: tweetUIDataList];
-    [self.searchResultsUI showNewTweets];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.searchResultsUI showNewTweets];
+    });
 }
 
 - (NSString*)dateTimeStringFromDate:(NSDate*)date {
@@ -72,10 +74,26 @@
 
 - (void)resetSearchResults {
     [self.searchResultDataSource resetTweets];
-    [self.searchResultsUI showNewTweets];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.searchResultsUI showNewTweets];
+    });
+}
+
+- (void)errorOccured:(NSError *)error {
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.searchResultsUI showModalDialogWithTitle:@"Ошибка" message:error.localizedDescription];
+    });
 }
 
 #pragma mark - SearchResultsUIEventHandler
+
+- (void)searchResultUIDidAppearToUser {
+    [self.searchResultsUI startEditSearchString];
+    
+    if ([self.searchInput respondsToSelector:@selector(searchUIIsReadyForPresentation)]) {
+        [self.searchInput searchUIIsReadyForPresentation];
+    }
+}
 
 - (void)queryStringHasBeenChangedByUser:(NSString*)queryString {
     [self.searchInput searchForUserInput:queryString];

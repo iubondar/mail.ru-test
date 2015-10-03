@@ -8,13 +8,16 @@
 
 #import "ViewController.h"
 #import "SearchResultCell.h"
+#import "SystemVersion.h"
 
 static NSString * const kSearchResultCellIdentifier = @"SearchResultCell";
 static CGFloat const kCellSeparatorHeight = 1;
 
-@interface ViewController () <UISearchBarDelegate, UITableViewDataSource>
+@interface ViewController () <UISearchBarDelegate, UITableViewDataSource, UIAlertViewDelegate>
+
 @property (weak, nonatomic) IBOutlet UITableView *searchResultsTable;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property BOOL isShowingAlert;
 
 @end
 
@@ -24,9 +27,11 @@ static CGFloat const kCellSeparatorHeight = 1;
 
 #pragma mark - View lifecycle
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if ([self.eventHandler respondsToSelector:@selector(searchResultUIDidAppearToUser)]) {
+        [self.eventHandler searchResultUIDidAppearToUser];
+    }
 }
 
 #pragma mark - Memory management
@@ -44,6 +49,39 @@ static CGFloat const kCellSeparatorHeight = 1;
 
 - (void)startEditSearchString {
     [self.searchBar becomeFirstResponder];
+}
+
+- (void)showModalDialogWithTitle:(NSString *)title message:(NSString *)message {
+    if (self.isShowingAlert) return;
+    self.isShowingAlert = YES;
+    
+    NSString *closeButtonTitle = @"OK";
+    if (SYSTEM_VERSION_LESS_THAN(@"8.0")) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+                                                        message:message
+                                                       delegate:self
+                                              cancelButtonTitle:closeButtonTitle
+                                              otherButtonTitles:nil];
+        [alert show];
+    }
+    else {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
+                                                                       message:message
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *closeAction = [UIAlertAction actionWithTitle:closeButtonTitle
+                                                              style:UIAlertActionStyleDefault
+                                                            handler:^(UIAlertAction *action) {
+                                                                self.isShowingAlert = NO;
+                                                                [self dismissViewControllerAnimated:YES
+                                                                                         completion:nil];
+                                                            }];
+        [alert addAction:closeAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    self.isShowingAlert = NO;
 }
 
 #pragma mark Private

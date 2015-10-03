@@ -10,7 +10,11 @@
 
 @protocol SearchResultsUIEventHandler <NSObject>
 
+@required
 - (void)queryStringHasBeenChangedByUser:(NSString*)queryString;
 - (void)userReachedTheEndOfList;
+
+@optional
+- (void)searchResultUIDidAppearToUser;
 
 @end

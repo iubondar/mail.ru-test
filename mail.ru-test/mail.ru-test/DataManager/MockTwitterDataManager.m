@@ -9,7 +9,7 @@
 #import "MockTwitterDataManager.h"
 #import "TweetSummary.h"
 
-static int const kTwitterPerPage = 20;
+static int const kTweetsPerPage = 20;
 
 static NSString * const mockTweetText = @"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 
@@ -19,6 +19,8 @@ static NSString * const mockTweetText = @"Lorem ipsum dolor sit amet, consectetu
 
 @implementation MockTwitterDataManager
 
+@synthesize twitterURLBuilder;
+
 - (instancetype) init {
     self = [super init];
     if (self) {
@@ -27,18 +29,24 @@ static NSString * const mockTweetText = @"Lorem ipsum dolor sit amet, consectetu
     return self;
 }
 
+- (void)connectToTwitterWithSuccess:(TwitterConnectionSuccessCallback)successCallback
+                              error:(TwitterErrorCallback)errorCallback
+{
+    if (successCallback) successCallback();
+}
+
 - (void)searchTweetsByHashtag:(NSString*)hashtag
                       sinceID:(NSString*)sinceID
               successCallback:(SuccessTweetsSearchCallback)successCallback
-                errorCallback:(ErrorTweetsSearchCallback)errorCallback;
+                errorCallback:(TwitterErrorCallback)errorCallback;
 {
-    successCallback([self portionOfTweets]);
+    if(successCallback)successCallback([self portionOfTweets]);
 }
 
 - (NSArray*)portionOfTweets {
     
     NSMutableArray * tweets = [NSMutableArray new];
-    for (int i = 0; i < kTwitterPerPage; i++) {
+    for (int i = 0; i < kTweetsPerPage; i++) {
         NSDate *date = [self generateRandomDateWithinDaysBeforeToday:10];
         int userIndex = arc4random_uniform((int)self.userNames.count);
         int substringIndex = arc4random_uniform(140);

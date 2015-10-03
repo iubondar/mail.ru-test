@@ -7,15 +7,22 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "TwitterAPIURLBuilder.h"
 
 typedef void (^SuccessTweetsSearchCallback)(NSArray *searchResults);
-typedef void (^ErrorTweetsSearchCallback)(NSError *error);
+typedef void (^TwitterErrorCallback)(NSError *error);
+typedef void (^TwitterConnectionSuccessCallback)();
 
 @protocol TwitterDataSource <NSObject>
+
+@property (nonatomic, strong) id<TwitterAPIURLBuilder> twitterURLBuilder;
+
+- (void)connectToTwitterWithSuccess:(TwitterConnectionSuccessCallback)successCallback
+                              error:(TwitterErrorCallback)errorCallback;
 
 - (void)searchTweetsByHashtag:(NSString*)hashtag
                       sinceID:(NSString*)sinceID
               successCallback:(SuccessTweetsSearchCallback)successCallback
-                errorCallback:(ErrorTweetsSearchCallback)errorCallback;
+                errorCallback:(TwitterErrorCallback)errorCallback;
 
 @end
