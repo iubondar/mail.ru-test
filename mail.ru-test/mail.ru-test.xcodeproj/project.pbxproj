@@ -93,6 +93,15 @@
 			name = "Table cell";
 			sourceTree = "<group>";
 		};
+		5CC06F791BC0192D008DD0A5 /* Mock data */ = {
+			isa = PBXGroup;
+			children = (
+				5CC06F6A1BBFB325008DD0A5 /* MockTwitterDataManager.h */,
+				5CC06F6B1BBFB325008DD0A5 /* MockTwitterDataManager.m */,
+			);
+			name = "Mock data";
+			sourceTree = "<group>";
+		};
 		73C25BFD1BBEC9BA003D5F12 = {
 			isa = PBXGroup;
 			children = (
@@ -172,8 +181,7 @@
 			isa = PBXGroup;
 			children = (
 				73C25C3C1BBEDF01003D5F12 /* TwitterDataSource.h */,
-				5CC06F6A1BBFB325008DD0A5 /* MockTwitterDataManager.h */,
-				5CC06F6B1BBFB325008DD0A5 /* MockTwitterDataManager.m */,
+				5CC06F791BC0192D008DD0A5 /* Mock data */,
 			);
 			name = TwitterService;
 			path = ..;

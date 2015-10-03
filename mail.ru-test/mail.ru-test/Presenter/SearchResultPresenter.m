@@ -81,4 +81,8 @@
     [self.searchInput searchForUserInput:queryString];
 }
 
+- (void)userReachedTheEndOfList {
+    [self.searchInput searchMore];
+}
+
 @end

@@ -44,7 +44,8 @@ static NSString * const mockTweetText = @"Lorem ipsum dolor sit amet, consectetu
         int substringIndex = arc4random_uniform(140);
         if (substringIndex < 20) substringIndex += 20;
         NSString * text = [mockTweetText substringToIndex:substringIndex];
-        TweetSummary *tweet = [[TweetSummary alloc] initWithDate:date
+        TweetSummary *tweet = [[TweetSummary alloc] initWithID:[NSString stringWithFormat:@"%d", i]
+                                                           date:date
                                                             user:self.userNames[userIndex]
                                                             text:text];
         [tweets addObject:tweet];

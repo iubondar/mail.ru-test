@@ -11,5 +11,6 @@
 @protocol SearchResultsUIEventHandler <NSObject>
 
 - (void)queryStringHasBeenChangedByUser:(NSString*)queryString;
+- (void)userReachedTheEndOfList;
 
 @end

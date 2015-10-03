@@ -10,9 +10,10 @@
 
 @implementation TweetSummary
 
-- (instancetype)initWithDate:(NSDate*)date user:(NSString*)user text:(NSString*)text; {
+- (instancetype)initWithID:(NSString*)tweetID date:(NSDate*)date user:(NSString*)user text:(NSString*)text; {
     self = [super init];
     if (self) {
+        self.tweetID = tweetID;
         self.date = date;
         self.user = user;
         self.text = text;

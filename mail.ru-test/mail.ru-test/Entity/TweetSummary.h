@@ -10,10 +10,11 @@
 
 @interface TweetSummary : NSObject
 
+@property (nonatomic, copy) NSString *tweetID;
 @property (nonatomic, strong) NSDate *date;
 @property (nonatomic, strong) NSString *user;
 @property (nonatomic, copy) NSString *text;
 
-- (instancetype)initWithDate:(NSDate*)date user:(NSString*)user text:(NSString*)text;
+- (instancetype)initWithID:(NSString*)tweetID date:(NSDate*)date user:(NSString*)user text:(NSString*)text;
 
 @end
