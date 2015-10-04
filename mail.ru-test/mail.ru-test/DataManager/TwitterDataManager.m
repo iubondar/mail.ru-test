@@ -11,27 +11,15 @@
 
 #import "TwitterDataManager.h"
 #import "ErrorCodes.h"
-#import "NSObject+Empty.h"
 #import "TweetSummary.h"
+#import "TwitterSearchOperation.h"
 
 static NSString * const kTweetsPerPage = @"20";
 
-static NSString * const kTweetSearchMetadataKey = @"search_metadata";
-static NSString * const kTweetNextResultsKey = @"next_results";
-
-static NSString * const kTweetStatusesKey = @"statuses";
-static NSString * const kTweetIDKey = @"id";
-static NSString * const kTweetTextKey = @"text";
-static NSString * const kTweetDateKey = @"created_at";
-static NSString * const kTweetUserKey = @"user";
-static NSString * const kTweetNameKey = @"name";
-
-@interface TwitterDataManager() {
-    NSDateFormatter *_twitterParserFormatter;
-}
+@interface TwitterDataManager()
 
 @property (nonatomic, strong) ACAccount *twitterAccount;
-@property (nonatomic, readonly) NSDateFormatter *twitterParserFormatter;
+@property (nonatomic, strong) NSOperationQueue * searchQueue;
 
 @end
 
@@ -41,16 +29,15 @@ static NSString * const kTweetNameKey = @"name";
 
 @synthesize twitterURLBuilder;
 
-- (NSDateFormatter*)twitterParserFormatter {
-    if (!_twitterParserFormatter) {
-        _twitterParserFormatter = [[NSDateFormatter alloc] init];
-        [_twitterParserFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
-        [_twitterParserFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
-        
-        // e.g. "Sat Oct 03 20:44:27 +0000 2015"
-        [_twitterParserFormatter setDateFormat:@"EEE MMM dd HH:mm:ss ZZZ yyyy"];
+- (instancetype)init {
+    self = [super init];
+    if (self) {
+        self.searchQueue = [NSOperationQueue new];
+        self.searchQueue.maxConcurrentOperationCount = 1;
+        self.searchQueue.name = @"Search queue";
+        self.searchQueue.qualityOfService = NSQualityOfServiceUserInitiated;
     }
-    return _twitterParserFormatter;
+    return self;
 }
 
 // @warning - Упрощение: используем только настроенные в Settings аккаунты.
@@ -117,18 +104,19 @@ static NSString * const kTweetNameKey = @"name";
                                        : [self.twitterURLBuilder twitterSearchURL];
     
     SLRequest *twitterSearchRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter
-                                                          requestMethod:SLRequestMethodGET
-                                                                    URL:url
-                                                             parameters:requestParameters];
+                                                         requestMethod:SLRequestMethodGET
+                                                                   URL:url
+                                                            parameters:requestParameters];
     [twitterSearchRequest setAccount:self.twitterAccount];
     
-    [twitterSearchRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-        [self processTwitterSearchResultWithData:responseData
-                                     urlResponce:urlResponse
-                                           error:error
-                                 successCallback:successCallback
-                                   errorCallback:errorCallback];
-    }];
+    TwitterSearchOperation *searchOperation = [[TwitterSearchOperation alloc] initWithRequest:twitterSearchRequest
+                                                                              successCallback:successCallback
+                                                                                errorCallback:errorCallback];
+    [self.searchQueue addOperation:searchOperation];
+}
+
+- (void)cancelCurrentSearch {
+    [self.searchQueue cancelAllOperations];
 }
 
 - (NSDictionary*)requestParametersForHashtag:(NSString*)hashtag {
@@ -137,106 +125,9 @@ static NSString * const kTweetNameKey = @"name";
     return requestParameters;
 }
 
-- (void)processTwitterSearchResultWithData:(NSData *)responseData
-                               urlResponce:(NSHTTPURLResponse *)urlResponse
-                                     error:(NSError *)error
-                           successCallback:(SuccessTweetsSearchCallback)successCallback
-                             errorCallback:(TwitterErrorCallback)errorCallback
-{
-    if ([urlResponse statusCode] == kTwitterRateLimitExceededErrorCode) {
-        if (errorCallback)
-            errorCallback([self errorWithCode:kTwitterRateLimitExceededErrorCode
-                                  description:@"Превышен лимит запросов"]);
-        return;
-    }
-
-    if (error) {
-        if (errorCallback) errorCallback(error);
-        return;
-    }
-    
-    if (responseData) {
-        
-        NSError *error = nil;
-        id resultData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&error];
-        
-        if (error) {
-            if (errorCallback) errorCallback([self parsingError]);
-            return;
-        }
-        
-        [self parseSearchResultData:resultData
-                            success:successCallback
-                              error:errorCallback];
-    }
-    else {
-        if (successCallback) successCallback(nil, nil);
-    }
-}
-
-- (void)parseSearchResultData:(id)resultData
-                      success:(SuccessTweetsSearchCallback)successCallback
-                        error:(TwitterErrorCallback)errorCallback
-{
-    @try {
-        NSMutableArray *tweetSummaries = [NSMutableArray new];
-        NSString *nextPageURL;
-        
-        NSDictionary * searchMetadata = [resultData objectForKey:kTweetSearchMetadataKey];
-        if ([NSObject isNotEmpty:searchMetadata]) {
-            NSString * nextResults = [searchMetadata objectForKey:kTweetNextResultsKey];
-            if ([NSObject isNotEmpty:nextResults]) nextPageURL = nextResults;
-        }
-        
-        NSArray *statuses = [resultData objectForKey:kTweetStatusesKey];
-        if ([NSObject isNotEmpty:statuses]) {
-            for (NSDictionary * status in statuses) {
-                
-                TweetSummary *tweetSummary = [self tweetSummaryFromStatusDictionary:status];
-                if (tweetSummary) [tweetSummaries addObject:tweetSummary];
-            }
-        }
-        
-        if (successCallback) successCallback(tweetSummaries, nextPageURL);
-    }
-    @catch (NSException *exception) {
-        if (errorCallback) errorCallback([self parsingError]);
-    }
-}
-
-- (TweetSummary*)tweetSummaryFromStatusDictionary:(NSDictionary*)status {
-    TweetSummary *tweetSummary = [TweetSummary new];
-    
-    NSNumber * tweetID = [status objectForKey:kTweetIDKey];
-    if ([NSObject isNotEmpty:tweetID]) tweetSummary.tweetID = [tweetID stringValue];
-    
-    NSString * tweetText = [status objectForKey:kTweetTextKey];
-    if ([NSObject isNotEmpty:tweetText]) tweetSummary.text = tweetText;
-    
-    NSString *tweetDateStr = [status objectForKey:kTweetDateKey];
-    if ([NSObject isNotEmpty:tweetDateStr]) {
-        tweetSummary.date = [self.twitterParserFormatter dateFromString:tweetDateStr];
-    }
-    
-    NSDictionary *user = [status objectForKey:kTweetUserKey];
-    if ([NSObject isNotEmpty:user]) {
-        NSString *tweetUserName = [user objectForKey:kTweetNameKey];
-        if ([NSObject isNotEmpty:tweetUserName]) {
-            tweetSummary.user = tweetUserName;
-        }
-    }
-    
-    return tweetSummary;
-}
-
 - (NSError*)errorWithCode:(NSInteger)code description:(NSString*)description {
     return [NSError errorWithDomain:kGeneralErrorDomain code:code
                            userInfo:@{NSLocalizedDescriptionKey: description}];
-}
-
-- (NSError*)parsingError {
-    return [NSError errorWithDomain:kGeneralErrorDomain code:kTwitterResponceParsingErrorCode
-                           userInfo:@{NSLocalizedDescriptionKey: @"Ошибка при обработке ответа сервера"}];
 }
 
 @end

@@ -36,6 +36,8 @@
 		5CC06FA41BC06BB3008DD0A5 /* TwitterURLSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC06FA21BC06BB3008DD0A5 /* TwitterURLSource.m */; settings = {ASSET_TAGS = (); }; };
 		5CF7AB4A1BC11A40008E7803 /* NSObject+Empty.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF7AB491BC11A40008E7803 /* NSObject+Empty.m */; settings = {ASSET_TAGS = (); }; };
 		5CF7AB4B1BC11A40008E7803 /* NSObject+Empty.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF7AB491BC11A40008E7803 /* NSObject+Empty.m */; settings = {ASSET_TAGS = (); }; };
+		5CF7AB501BC192AA008E7803 /* TwitterSearchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF7AB4F1BC192AA008E7803 /* TwitterSearchOperation.m */; settings = {ASSET_TAGS = (); }; };
+		5CF7AB511BC192AA008E7803 /* TwitterSearchOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF7AB4F1BC192AA008E7803 /* TwitterSearchOperation.m */; settings = {ASSET_TAGS = (); }; };
 		731E50EF1BBEEAE200032FBD /* SearchResultDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 731E50EE1BBEEAE200032FBD /* SearchResultDataSource.m */; settings = {ASSET_TAGS = (); }; };
 		73C25C0B1BBEC9BA003D5F12 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 73C25C0A1BBEC9BA003D5F12 /* main.m */; };
 		73C25C0E1BBEC9BA003D5F12 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 73C25C0D1BBEC9BA003D5F12 /* AppDelegate.m */; };
@@ -72,6 +74,8 @@
 		5CC06FA21BC06BB3008DD0A5 /* TwitterURLSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TwitterURLSource.m; path = TwitterService/TwitterURLSource.m; sourceTree = "<group>"; };
 		5CF7AB481BC11A40008E7803 /* NSObject+Empty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+Empty.h"; path = "Utils/NSObject+Empty.h"; sourceTree = "<group>"; };
 		5CF7AB491BC11A40008E7803 /* NSObject+Empty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+Empty.m"; path = "Utils/NSObject+Empty.m"; sourceTree = "<group>"; };
+		5CF7AB4E1BC192AA008E7803 /* TwitterSearchOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterSearchOperation.h; path = DataManager/TwitterSearchOperation.h; sourceTree = "<group>"; };
+		5CF7AB4F1BC192AA008E7803 /* TwitterSearchOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TwitterSearchOperation.m; path = DataManager/TwitterSearchOperation.m; sourceTree = "<group>"; };
 		731E50EB1BBEE8A600032FBD /* TwitterSearchResultsUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterSearchResultsUI.h; sourceTree = "<group>"; };
 		731E50EC1BBEE90700032FBD /* TwitterSearchResultTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterSearchResultTableDataSource.h; sourceTree = "<group>"; };
 		731E50ED1BBEEAE200032FBD /* SearchResultDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchResultDataSource.h; path = Presenter/SearchResultDataSource.h; sourceTree = "<group>"; };
@@ -187,6 +191,8 @@
 			children = (
 				5CC06F7A1BC02605008DD0A5 /* TwitterDataManager.h */,
 				5CC06F7B1BC02605008DD0A5 /* TwitterDataManager.m */,
+				5CF7AB4E1BC192AA008E7803 /* TwitterSearchOperation.h */,
+				5CF7AB4F1BC192AA008E7803 /* TwitterSearchOperation.m */,
 			);
 			name = "Real data manager";
 			sourceTree = "<group>";
@@ -420,6 +426,7 @@
 				5CC06F8F1BC062FA008DD0A5 /* main.m in Sources */,
 				5CC06F901BC062FA008DD0A5 /* TwitterSearchInteractor.m in Sources */,
 				5CC06F911BC062FA008DD0A5 /* FittingSizeLabel.m in Sources */,
+				5CF7AB511BC192AA008E7803 /* TwitterSearchOperation.m in Sources */,
 				5CC06F921BC062FA008DD0A5 /* AppDependencies.m in Sources */,
 				5CC06F931BC062FA008DD0A5 /* MockTwitterDataManager.m in Sources */,
 			);
@@ -442,6 +449,7 @@
 				73C25C0B1BBEC9BA003D5F12 /* main.m in Sources */,
 				73C25C361BBEDC28003D5F12 /* TwitterSearchInteractor.m in Sources */,
 				5CC06F771BBFFF6D008DD0A5 /* FittingSizeLabel.m in Sources */,
+				5CF7AB501BC192AA008E7803 /* TwitterSearchOperation.m in Sources */,
 				73C25C2F1BBED907003D5F12 /* AppDependencies.m in Sources */,
 				5CC06F6C1BBFB325008DD0A5 /* MockTwitterDataManager.m in Sources */,
 			);

@@ -108,7 +108,7 @@ static CGFloat const kCellSeparatorHeight = 1;
     }
     
     [self.searchResultsTable beginUpdates];
-    [self.searchResultsTable insertRowsAtIndexPaths:newIndexPaths withRowAnimation:UITableViewRowAnimationFade];
+    [self.searchResultsTable insertRowsAtIndexPaths:newIndexPaths withRowAnimation:UITableViewRowAnimationNone];
     [self.searchResultsTable endUpdates];
 }
 

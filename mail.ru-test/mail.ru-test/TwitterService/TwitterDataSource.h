@@ -25,4 +25,6 @@ typedef void (^TwitterConnectionSuccessCallback)();
               successCallback:(SuccessTweetsSearchCallback)successCallback
                 errorCallback:(TwitterErrorCallback)errorCallback;
 
+- (void)cancelCurrentSearch;
+
 @end

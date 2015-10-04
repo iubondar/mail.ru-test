@@ -79,6 +79,7 @@
     [self resetNextPageURL];
     self.currentSearchString = inputString;
     
+    [self.twitterDataSource cancelCurrentSearch];
     [self.output resetSearchResults];
     
     [self.twitterDataSource searchTweetsByHashtag:self.currentSearchString

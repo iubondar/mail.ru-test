@@ -29,6 +29,10 @@ static NSString * const mockTweetText = @"Lorem ipsum dolor sit amet, consectetu
     return self;
 }
 
+- (void) cancelCurrentSearch {
+    
+}
+
 - (void)connectToTwitterWithSuccess:(TwitterConnectionSuccessCallback)successCallback
                               error:(TwitterErrorCallback)errorCallback
 {
