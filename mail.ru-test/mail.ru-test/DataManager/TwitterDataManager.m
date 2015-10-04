@@ -14,7 +14,7 @@
 #import "NSObject+Empty.h"
 #import "TweetSummary.h"
 
-static int const kTweetsPerPage = 20;
+static NSString * const kTweetsPerPage = @"20";
 
 static NSString * const kTweetSearchMetadataKey = @"search_metadata";
 static NSString * const kTweetNextResultsKey = @"next_results";
@@ -133,9 +133,7 @@ static NSString * const kTweetNameKey = @"name";
 
 - (NSDictionary*)requestParametersForHashtag:(NSString*)hashtag {
     NSString *queryHashtag = ([hashtag hasPrefix:@"#"]) ? hashtag : [NSString stringWithFormat:@"#%@", hashtag];
-    NSMutableDictionary *requestParameters = [NSMutableDictionary dictionaryWithDictionary:@{
-                                                                                             @"q":queryHashtag,
-                                                                                             }];
+    NSDictionary *requestParameters = @{@"q":queryHashtag, @"count": kTweetsPerPage};
     return requestParameters;
 }
 
