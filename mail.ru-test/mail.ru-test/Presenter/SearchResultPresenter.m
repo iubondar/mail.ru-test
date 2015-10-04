@@ -52,6 +52,7 @@
 - (void)tweetsFound:(NSArray*)tweetSummaries {
     NSMutableArray *tweetUIDataList = [NSMutableArray new];
     for (TweetSummary *tweetSummary in tweetSummaries) {
+        
         NSString *userName = tweetSummary.user;
         NSString *dateTime = [self dateTimeStringFromDate:tweetSummary.date];
         NSString *status = tweetSummary.text;

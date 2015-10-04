@@ -21,4 +21,10 @@
     return self;
 }
 
+- (NSString*)description {
+    NSString *description = [super description];
+    NSString *extendedDescription = [description stringByAppendingFormat:@"ID: %@, user: %@, date: %@, text: %@", self.tweetID, self.user, self.date, self.text];
+    return extendedDescription;
+}
+
 @end
