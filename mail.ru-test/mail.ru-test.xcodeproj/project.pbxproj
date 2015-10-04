@@ -34,6 +34,8 @@
 		5CC06F9A1BC062FA008DD0A5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 73C25C121BBEC9BA003D5F12 /* Main.storyboard */; };
 		5CC06FA31BC06BB3008DD0A5 /* TwitterURLSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC06FA21BC06BB3008DD0A5 /* TwitterURLSource.m */; settings = {ASSET_TAGS = (); }; };
 		5CC06FA41BC06BB3008DD0A5 /* TwitterURLSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CC06FA21BC06BB3008DD0A5 /* TwitterURLSource.m */; settings = {ASSET_TAGS = (); }; };
+		5CF7AB4A1BC11A40008E7803 /* NSObject+Empty.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF7AB491BC11A40008E7803 /* NSObject+Empty.m */; settings = {ASSET_TAGS = (); }; };
+		5CF7AB4B1BC11A40008E7803 /* NSObject+Empty.m in Sources */ = {isa = PBXBuildFile; fileRef = 5CF7AB491BC11A40008E7803 /* NSObject+Empty.m */; settings = {ASSET_TAGS = (); }; };
 		731E50EF1BBEEAE200032FBD /* SearchResultDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 731E50EE1BBEEAE200032FBD /* SearchResultDataSource.m */; settings = {ASSET_TAGS = (); }; };
 		73C25C0B1BBEC9BA003D5F12 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 73C25C0A1BBEC9BA003D5F12 /* main.m */; };
 		73C25C0E1BBEC9BA003D5F12 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 73C25C0D1BBEC9BA003D5F12 /* AppDelegate.m */; };
@@ -68,6 +70,8 @@
 		5CC06FA01BC06B21008DD0A5 /* TwitterAPIURLBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterAPIURLBuilder.h; sourceTree = "<group>"; };
 		5CC06FA11BC06BB3008DD0A5 /* TwitterURLSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterURLSource.h; path = TwitterService/TwitterURLSource.h; sourceTree = "<group>"; };
 		5CC06FA21BC06BB3008DD0A5 /* TwitterURLSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TwitterURLSource.m; path = TwitterService/TwitterURLSource.m; sourceTree = "<group>"; };
+		5CF7AB481BC11A40008E7803 /* NSObject+Empty.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+Empty.h"; path = "Utils/NSObject+Empty.h"; sourceTree = "<group>"; };
+		5CF7AB491BC11A40008E7803 /* NSObject+Empty.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+Empty.m"; path = "Utils/NSObject+Empty.m"; sourceTree = "<group>"; };
 		731E50EB1BBEE8A600032FBD /* TwitterSearchResultsUI.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterSearchResultsUI.h; sourceTree = "<group>"; };
 		731E50EC1BBEE90700032FBD /* TwitterSearchResultTableDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterSearchResultTableDataSource.h; sourceTree = "<group>"; };
 		731E50ED1BBEEAE200032FBD /* SearchResultDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchResultDataSource.h; path = Presenter/SearchResultDataSource.h; sourceTree = "<group>"; };
@@ -162,8 +166,29 @@
 			children = (
 				5CC06F841BC06030008DD0A5 /* ErrorCodes.h */,
 				5CC06F821BC037EB008DD0A5 /* SystemVersion.h */,
+				5CF7AB481BC11A40008E7803 /* NSObject+Empty.h */,
+				5CF7AB491BC11A40008E7803 /* NSObject+Empty.m */,
 			);
 			name = Utils;
+			sourceTree = "<group>";
+		};
+		5CF7AB4C1BC121ED008E7803 /* URL building */ = {
+			isa = PBXGroup;
+			children = (
+				5CC06FA01BC06B21008DD0A5 /* TwitterAPIURLBuilder.h */,
+				5CC06FA11BC06BB3008DD0A5 /* TwitterURLSource.h */,
+				5CC06FA21BC06BB3008DD0A5 /* TwitterURLSource.m */,
+			);
+			name = "URL building";
+			sourceTree = "<group>";
+		};
+		5CF7AB4D1BC12200008E7803 /* Real data manager */ = {
+			isa = PBXGroup;
+			children = (
+				5CC06F7A1BC02605008DD0A5 /* TwitterDataManager.h */,
+				5CC06F7B1BC02605008DD0A5 /* TwitterDataManager.m */,
+			);
+			name = "Real data manager";
 			sourceTree = "<group>";
 		};
 		73C25BFD1BBEC9BA003D5F12 = {
@@ -248,12 +273,9 @@
 		73C25C321BBEDB27003D5F12 /* TwitterService */ = {
 			isa = PBXGroup;
 			children = (
+				5CF7AB4C1BC121ED008E7803 /* URL building */,
 				73C25C3C1BBEDF01003D5F12 /* TwitterDataSource.h */,
-				5CC06F7A1BC02605008DD0A5 /* TwitterDataManager.h */,
-				5CC06F7B1BC02605008DD0A5 /* TwitterDataManager.m */,
-				5CC06FA01BC06B21008DD0A5 /* TwitterAPIURLBuilder.h */,
-				5CC06FA11BC06BB3008DD0A5 /* TwitterURLSource.h */,
-				5CC06FA21BC06BB3008DD0A5 /* TwitterURLSource.m */,
+				5CF7AB4D1BC12200008E7803 /* Real data manager */,
 				5CC06F791BC0192D008DD0A5 /* Mock data manager */,
 			);
 			name = TwitterService;
@@ -393,6 +415,7 @@
 				5CC06F8B1BC062FA008DD0A5 /* AppDelegate.m in Sources */,
 				5CC06F8C1BC062FA008DD0A5 /* SearchResultDataSource.m in Sources */,
 				5CC06F8D1BC062FA008DD0A5 /* TweetSummary.m in Sources */,
+				5CF7AB4B1BC11A40008E7803 /* NSObject+Empty.m in Sources */,
 				5CC06F8E1BC062FA008DD0A5 /* ViewController.m in Sources */,
 				5CC06F8F1BC062FA008DD0A5 /* main.m in Sources */,
 				5CC06F901BC062FA008DD0A5 /* TwitterSearchInteractor.m in Sources */,
@@ -414,6 +437,7 @@
 				73C25C0E1BBEC9BA003D5F12 /* AppDelegate.m in Sources */,
 				731E50EF1BBEEAE200032FBD /* SearchResultDataSource.m in Sources */,
 				5CC06F6F1BBFB3F3008DD0A5 /* TweetSummary.m in Sources */,
+				5CF7AB4A1BC11A40008E7803 /* NSObject+Empty.m in Sources */,
 				73C25C2C1BBED542003D5F12 /* ViewController.m in Sources */,
 				73C25C0B1BBEC9BA003D5F12 /* main.m in Sources */,
 				73C25C361BBEDC28003D5F12 /* TwitterSearchInteractor.m in Sources */,

@@ -11,12 +11,24 @@
 
 #import "TwitterDataManager.h"
 #import "ErrorCodes.h"
+#import "NSObject+Empty.h"
+#import "TweetSummary.h"
 
 static int const kTweetsPerPage = 20;
 
-@interface TwitterDataManager()
+static NSString * const kTweetStatusesKey = @"statuses";
+static NSString * const kTweetIDKey = @"id";
+static NSString * const kTweetTextKey = @"text";
+static NSString * const kTweetDateKey = @"created_at";
+static NSString * const kTweetUserKey = @"user";
+static NSString * const kTweetNameKey = @"name";
+
+@interface TwitterDataManager() {
+    NSDateFormatter *_twitterParserFormatter;
+}
 
 @property (nonatomic, strong) ACAccount *twitterAccount;
+@property (nonatomic, readonly) NSDateFormatter *twitterParserFormatter;
 
 @end
 
@@ -25,6 +37,18 @@ static int const kTweetsPerPage = 20;
 #pragma mark - TwitterDataSource implementation
 
 @synthesize twitterURLBuilder;
+
+- (NSDateFormatter*)twitterParserFormatter {
+    if (!_twitterParserFormatter) {
+        _twitterParserFormatter = [[NSDateFormatter alloc] init];
+        [_twitterParserFormatter setTimeZone:[NSTimeZone timeZoneForSecondsFromGMT:0]];
+        [_twitterParserFormatter setLocale:[[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"]];
+        
+        // e.g. "Sat Oct 03 20:44:27 +0000 2015"
+        [_twitterParserFormatter setDateFormat:@"EEE MMM dd HH:mm:ss ZZZ yyyy"];
+    }
+    return _twitterParserFormatter;
+}
 
 // @warning - Упрощение: используем только настроенные в Settings аккаунты.
 // Если аккаунтов больше одного - используем первый в списке
@@ -133,21 +157,78 @@ static int const kTweetsPerPage = 20;
     if (responseData) {
         
         NSError *error = nil;
-        NSArray *resultData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&error];
+        id resultData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&error];
         
         if (error) {
-            if (errorCallback) errorCallback([self errorWithCode:kTwitterResponceParsingErrorCode
-                                                     description:@"Ошибка при обработке ответа сервера"]);
+            if (errorCallback) errorCallback([self parsingError]);
             return;
         }
         
-        NSLog(@"Data:\n%@", resultData);
+        [self parseSearchResultData:resultData
+                            success:successCallback
+                              error:errorCallback];
     }
+    else {
+        if (successCallback) successCallback(nil);
+    }
+}
+
+- (void)parseSearchResultData:(id)resultData
+                      success:(SuccessTweetsSearchCallback)successCallback
+                        error:(TwitterErrorCallback)errorCallback
+{
+    @try {
+        NSMutableArray *tweetSummaries = [NSMutableArray new];
+        
+        NSArray *statuses = [resultData objectForKey:kTweetStatusesKey];
+        if ([NSObject isNotEmpty:statuses]) {
+            for (NSDictionary * status in statuses) {
+                
+                TweetSummary *tweetSummary = [self tweetSummaryFromStatusDictionary:status];
+                if (tweetSummary) [tweetSummaries addObject:tweetSummary];
+            }
+        }
+        
+        if (successCallback) successCallback(tweetSummaries);
+    }
+    @catch (NSException *exception) {
+        if (errorCallback) errorCallback([self parsingError]);
+    }
+}
+
+- (TweetSummary*) tweetSummaryFromStatusDictionary:(NSDictionary*)status {
+    TweetSummary *tweetSummary = [TweetSummary new];
+    
+    NSNumber * tweetID = [status objectForKey:kTweetIDKey];
+    if ([NSObject isNotEmpty:tweetID]) tweetSummary.tweetID = [tweetID stringValue];
+    
+    NSString * tweetText = [status objectForKey:kTweetTextKey];
+    if ([NSObject isNotEmpty:tweetText]) tweetSummary.text = tweetText;
+    
+    NSString *tweetDateStr = [status objectForKey:kTweetDateKey];
+    if ([NSObject isNotEmpty:tweetDateStr]) {
+        tweetSummary.date = [self.twitterParserFormatter dateFromString:tweetDateStr];
+    }
+    
+    NSDictionary *user = [status objectForKey:kTweetUserKey];
+    if ([NSObject isNotEmpty:user]) {
+        NSString *tweetUserName = [user objectForKey:kTweetNameKey];
+        if ([NSObject isNotEmpty:tweetUserName]) {
+            tweetSummary.user = tweetUserName;
+        }
+    }
+    
+    return tweetSummary;
 }
 
 - (NSError*)errorWithCode:(NSInteger)code description:(NSString*)description {
     return [NSError errorWithDomain:kGeneralErrorDomain code:code
                            userInfo:@{NSLocalizedDescriptionKey: description}];
+}
+
+- (NSError*)parsingError {
+    return [NSError errorWithDomain:kGeneralErrorDomain code:kTwitterResponceParsingErrorCode
+                           userInfo:@{NSLocalizedDescriptionKey: @"Ошибка при обработке ответа сервера"}];
 }
 
 @end
