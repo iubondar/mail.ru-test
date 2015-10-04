@@ -11,7 +11,8 @@
 
 @interface TwitterSearchInteractor()
 @property (nonatomic, copy) NSString *currentSearchString;
-@property (nonatomic) NSString *lastTweetID;
+@property (nonatomic) NSString *nextPageURL;
+@property (atomic) BOOL isSearchingMoreTweets;
 @end
 
 @implementation TwitterSearchInteractor
@@ -19,7 +20,7 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        [self resetLastTweetID];
+        [self resetNextPageURL];
     }
     return self;
 }
@@ -58,36 +59,40 @@
     [self checkAssertions];
     
     if (!self.currentSearchString) return;
-    if (!self.lastTweetID) return;
+    if (!self.nextPageURL) return;
+    if (self.isSearchingMoreTweets) return;
+    
+    self.isSearchingMoreTweets = YES;
     
     [self.twitterDataSource searchTweetsByHashtag:self.currentSearchString
-                                          sinceID:self.lastTweetID
-                                  successCallback:^(NSArray *searchResults) {
-                                      [self processSearchResults:searchResults];
+                                      nextPageURL:self.nextPageURL
+                                  successCallback:^(NSArray *searchResults,  NSString* nextPageURL) {
+                                      [self processSearchResults:searchResults nextPageURL:nextPageURL];
+                                      self.isSearchingMoreTweets = NO;
                                   } errorCallback:^(NSError *error) {
                                       [self processError:error];
+                                      self.isSearchingMoreTweets = NO;
                                   }];
 }
 
 - (void)queryTweetsDataFromFirstPageWithInputString:(NSString*)inputString {
-    [self resetLastTweetID];
+    [self resetNextPageURL];
     self.currentSearchString = inputString;
     
     [self.output resetSearchResults];
     
     [self.twitterDataSource searchTweetsByHashtag:self.currentSearchString
-                                          sinceID:nil
-                                  successCallback:^(NSArray *searchResults) {
-                                      [self processSearchResults:searchResults];
+                                      nextPageURL:self.nextPageURL
+                                  successCallback:^(NSArray *searchResults, NSString* nextPageURL) {
+                                      [self processSearchResults:searchResults nextPageURL:nextPageURL];
                                   } errorCallback:^(NSError *error) {
                                       [self processError:error];
                                   }];
 }
 
-- (void)processSearchResults:(NSArray*)searchResults {
+- (void)processSearchResults:(NSArray*)searchResults nextPageURL:(NSString*) nextPageURL {
     if (searchResults.count > 0) {
-        TweetSummary *tweetSummary = [searchResults lastObject];
-        self.lastTweetID = tweetSummary.tweetID;
+        self.nextPageURL = nextPageURL;
         [self.output tweetsFound:searchResults];
     }
 }
@@ -98,8 +103,8 @@
 
 #pragma mark - Private
 
-- (void)resetLastTweetID {
-    self.lastTweetID = nil;
+- (void)resetNextPageURL {
+    self.nextPageURL = nil;
 }
 
 @end

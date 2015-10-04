@@ -36,11 +36,11 @@ static NSString * const mockTweetText = @"Lorem ipsum dolor sit amet, consectetu
 }
 
 - (void)searchTweetsByHashtag:(NSString*)hashtag
-                      sinceID:(NSString*)sinceID
+                  nextPageURL:(NSString *)nextPageURL
               successCallback:(SuccessTweetsSearchCallback)successCallback
                 errorCallback:(TwitterErrorCallback)errorCallback;
 {
-    if(successCallback)successCallback([self portionOfTweets]);
+    if(successCallback)successCallback([self portionOfTweets], nil);
 }
 
 - (NSArray*)portionOfTweets {

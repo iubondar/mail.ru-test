@@ -16,6 +16,9 @@
 
 static int const kTweetsPerPage = 20;
 
+static NSString * const kTweetSearchMetadataKey = @"search_metadata";
+static NSString * const kTweetNextResultsKey = @"next_results";
+
 static NSString * const kTweetStatusesKey = @"statuses";
 static NSString * const kTweetIDKey = @"id";
 static NSString * const kTweetTextKey = @"text";
@@ -82,7 +85,7 @@ static NSString * const kTweetNameKey = @"name";
 }
 
 - (void)searchTweetsByHashtag:(NSString *)hashtag
-                      sinceID:(NSString *)sinceID
+                  nextPageURL:(NSString*)nextPageURL
               successCallback:(SuccessTweetsSearchCallback)successCallback
                 errorCallback:(TwitterErrorCallback)errorCallback
 {
@@ -90,14 +93,14 @@ static NSString * const kTweetNameKey = @"name";
     
     if (self.twitterAccount) {
         [self performSearchByHashtag:hashtag
-                             sinceID:sinceID
+                         nextPageURL:(NSString*)nextPageURL
                      successCallback:successCallback
                        errorCallback:errorCallback];
     }
     else {
         [self connectToTwitterWithSuccess:^{
             [self performSearchByHashtag:hashtag
-                                 sinceID:sinceID
+                             nextPageURL:(NSString*)nextPageURL
                          successCallback:successCallback
                            errorCallback:errorCallback];
         } error:errorCallback];
@@ -105,15 +108,17 @@ static NSString * const kTweetNameKey = @"name";
 }
 
 - (void)performSearchByHashtag:(NSString *)hashtag
-                       sinceID:(NSString *)sinceID
+                   nextPageURL:(NSString*)nextPageURL
                successCallback:(SuccessTweetsSearchCallback)successCallback
                  errorCallback:(TwitterErrorCallback)errorCallback
 {
-    NSDictionary *requestParameters = [self requestParametersForHashtag:hashtag sinceID:sinceID];
+    NSDictionary *requestParameters = (nextPageURL !=nil ) ? nil : [self requestParametersForHashtag:hashtag];
+    NSURL * url = (nextPageURL !=nil ) ? [self.twitterURLBuilder URLForNextPage:nextPageURL]
+                                       : [self.twitterURLBuilder twitterSearchURL];
     
     SLRequest *twitterSearchRequest = [SLRequest requestForServiceType:SLServiceTypeTwitter
                                                           requestMethod:SLRequestMethodGET
-                                                                    URL:[self.twitterURLBuilder twitterSearchURL]
+                                                                    URL:url
                                                              parameters:requestParameters];
     [twitterSearchRequest setAccount:self.twitterAccount];
     
@@ -126,13 +131,11 @@ static NSString * const kTweetNameKey = @"name";
     }];
 }
 
-- (NSDictionary*)requestParametersForHashtag:(NSString*)hashtag sinceID:(NSString*)sinceID {
+- (NSDictionary*)requestParametersForHashtag:(NSString*)hashtag {
     NSString *queryHashtag = ([hashtag hasPrefix:@"#"]) ? hashtag : [NSString stringWithFormat:@"#%@", hashtag];
     NSMutableDictionary *requestParameters = [NSMutableDictionary dictionaryWithDictionary:@{
                                                                                              @"q":queryHashtag,
-                                                                                             @"count":@(kTweetsPerPage)
                                                                                              }];
-    if (sinceID) requestParameters[@"since_id"] = sinceID;
     return requestParameters;
 }
 
@@ -169,7 +172,7 @@ static NSString * const kTweetNameKey = @"name";
                               error:errorCallback];
     }
     else {
-        if (successCallback) successCallback(nil);
+        if (successCallback) successCallback(nil, nil);
     }
 }
 
@@ -179,6 +182,13 @@ static NSString * const kTweetNameKey = @"name";
 {
     @try {
         NSMutableArray *tweetSummaries = [NSMutableArray new];
+        NSString *nextPageURL;
+        
+        NSDictionary * searchMetadata = [resultData objectForKey:kTweetSearchMetadataKey];
+        if ([NSObject isNotEmpty:searchMetadata]) {
+            NSString * nextResults = [searchMetadata objectForKey:kTweetNextResultsKey];
+            if ([NSObject isNotEmpty:nextResults]) nextPageURL = nextResults;
+        }
         
         NSArray *statuses = [resultData objectForKey:kTweetStatusesKey];
         if ([NSObject isNotEmpty:statuses]) {
@@ -189,14 +199,14 @@ static NSString * const kTweetNameKey = @"name";
             }
         }
         
-        if (successCallback) successCallback(tweetSummaries);
+        if (successCallback) successCallback(tweetSummaries, nextPageURL);
     }
     @catch (NSException *exception) {
         if (errorCallback) errorCallback([self parsingError]);
     }
 }
 
-- (TweetSummary*) tweetSummaryFromStatusDictionary:(NSDictionary*)status {
+- (TweetSummary*)tweetSummaryFromStatusDictionary:(NSDictionary*)status {
     TweetSummary *tweetSummary = [TweetSummary new];
     
     NSNumber * tweetID = [status objectForKey:kTweetIDKey];

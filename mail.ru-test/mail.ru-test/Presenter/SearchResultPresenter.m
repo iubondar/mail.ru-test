@@ -51,7 +51,12 @@
 
 - (void)tweetsFound:(NSArray*)tweetSummaries {
     NSMutableArray *tweetUIDataList = [NSMutableArray new];
+    
+    NSLog(@"TweetsFound: %ld", (long)tweetSummaries.count);
+    
     for (TweetSummary *tweetSummary in tweetSummaries) {
+        
+        NSLog(@"%@", tweetSummary.description);
         
         NSString *userName = tweetSummary.user;
         NSString *dateTime = [self dateTimeStringFromDate:tweetSummary.date];
@@ -61,6 +66,7 @@
                                                                   statusText:status];
         [tweetUIDataList addObject:tweetUIData];
     }
+    
     [self.searchResultDataSource addTweets: tweetUIDataList];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.searchResultsUI showNewTweets];

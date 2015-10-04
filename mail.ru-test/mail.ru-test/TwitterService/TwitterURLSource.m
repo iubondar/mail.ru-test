@@ -12,7 +12,20 @@
 @implementation TwitterURLSource
 
 - (NSURL*)twitterSearchURL {
-    return [NSURL URLWithString:@"https://api.twitter.com/1.1/search/tweets.json"];
+    return [self URLFromString:[self twitterSearchURLString]];
+}
+
+- (NSURL*)URLForNextPage:(NSString*)nextPageURL {
+    NSString * URLString = [NSString stringWithFormat:@"%@%@", [self twitterSearchURLString], nextPageURL];
+    return [self URLFromString:URLString];
+}
+
+- (NSString*)twitterSearchURLString {
+    return @"https://api.twitter.com/1.1/search/tweets.json";
+}
+
+- (NSURL*)URLFromString:(NSString*)URLString {
+    return [NSURL URLWithString:URLString];
 }
 
 @end

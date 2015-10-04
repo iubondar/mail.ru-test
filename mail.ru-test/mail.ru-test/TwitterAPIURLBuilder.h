@@ -11,5 +11,6 @@
 @protocol TwitterAPIURLBuilder <NSObject>
 
 - (NSURL*)twitterSearchURL;
+- (NSURL*)URLForNextPage:(NSString*)nextPageURL;
 
 @end

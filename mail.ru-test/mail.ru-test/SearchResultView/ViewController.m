@@ -18,6 +18,7 @@ static CGFloat const kCellSeparatorHeight = 1;
 @property (weak, nonatomic) IBOutlet UITableView *searchResultsTable;
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property BOOL isShowingAlert;
+@property NSInteger numberOfRows;
 
 @end
 
@@ -44,7 +45,14 @@ static CGFloat const kCellSeparatorHeight = 1;
 #pragma mark - TwitterSearchResultsUI
 
 - (void)showNewTweets {
-    [self reloadTable];
+    NSInteger currentTweetsCount = [self.searchResultDataSource totalTweetsCount];
+    if (self.numberOfRows > 0 && self.numberOfRows < currentTweetsCount) {
+        [self insertRows:currentTweetsCount - self.numberOfRows];
+    }
+    else {
+        [self reloadTable];
+    }
+    self.numberOfRows = currentTweetsCount;
 }
 
 - (void)startEditSearchString {
@@ -88,6 +96,20 @@ static CGFloat const kCellSeparatorHeight = 1;
 
 - (void)reloadTable {
     [self.searchResultsTable reloadData];
+}
+
+- (void)insertRows:(NSInteger)newRowsCount {
+    
+    NSInteger firstRowToInsert = self.numberOfRows;
+    NSMutableArray *newIndexPaths = [NSMutableArray new];
+    for (int i = 0; i < newRowsCount; ++i) {
+        NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:firstRowToInsert + i inSection:0];
+        [newIndexPaths addObject:newIndexPath];
+    }
+    
+    [self.searchResultsTable beginUpdates];
+    [self.searchResultsTable insertRowsAtIndexPaths:newIndexPaths withRowAnimation:UITableViewRowAnimationFade];
+    [self.searchResultsTable endUpdates];
 }
 
 - (BOOL)isLandscapeOrientation {

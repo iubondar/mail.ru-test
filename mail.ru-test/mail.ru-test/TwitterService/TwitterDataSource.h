@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "TwitterAPIURLBuilder.h"
 
-typedef void (^SuccessTweetsSearchCallback)(NSArray *searchResults);
+typedef void (^SuccessTweetsSearchCallback)(NSArray *searchResults, NSString* nextPageURL);
 typedef void (^TwitterErrorCallback)(NSError *error);
 typedef void (^TwitterConnectionSuccessCallback)();
 
@@ -21,7 +21,7 @@ typedef void (^TwitterConnectionSuccessCallback)();
                               error:(TwitterErrorCallback)errorCallback;
 
 - (void)searchTweetsByHashtag:(NSString*)hashtag
-                      sinceID:(NSString*)sinceID
+                  nextPageURL:(NSString*)nextPageURL
               successCallback:(SuccessTweetsSearchCallback)successCallback
                 errorCallback:(TwitterErrorCallback)errorCallback;
 
