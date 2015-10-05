@@ -23,11 +23,18 @@ static NSString * const kTweetNameKey = @"name";
 
 @interface TwitterSearchOperation(){
     NSDateFormatter *_twitterParserFormatter;
+    
+    BOOL _isExecuting;
+    BOOL _isFinished;
 }
 
 @property (nonatomic, strong) SLRequest *twitterSearchRequest;
 @property (nonatomic, copy) SuccessTweetsSearchCallback successCallback;
 @property (nonatomic, copy) TwitterErrorCallback errorCallback;
+
+@property (nonatomic, strong) NSError *error;
+@property (nonatomic, strong) NSArray *searchResults;
+@property (nonatomic, strong) NSString* nextPageURL;
 
 @property (nonatomic, readonly) NSDateFormatter *twitterParserFormatter;
 
@@ -47,6 +54,8 @@ static NSString * const kTweetNameKey = @"name";
     return _twitterParserFormatter;
 }
 
+#pragma mark - NSOperation
+
 - (instancetype)initWithRequest:(SLRequest *)twitterSearchRequest
                 successCallback:(SuccessTweetsSearchCallback)successCallback
                   errorCallback:(TwitterErrorCallback)errorCallback
@@ -56,40 +65,104 @@ static NSString * const kTweetNameKey = @"name";
         self.twitterSearchRequest = twitterSearchRequest;
         self.successCallback = successCallback;
         self.errorCallback = errorCallback;
+        
+        _isExecuting = NO;
+        _isFinished = NO;
     }
     return self;
 }
 
-- (void)main {
-    @autoreleasepool {
-        [self.twitterSearchRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
-            
-            [self checkCancellation];
-            
-            [self processTwitterSearchResultWithData:responseData
-                                         urlResponce:urlResponse
-                                               error:error
-                                     successCallback:self.successCallback
-                                       errorCallback:self.errorCallback];
-        }];
-    }
+- (BOOL)isAsynchronous
+{
+    return YES;
 }
+
+- (BOOL)isConcurrent
+{
+    return YES;
+}
+
+- (BOOL)isExecuting {
+    return _isExecuting;
+}
+
+- (BOOL)isFinished {
+    return _isFinished;
+}
+
+- (void)start
+{
+    if (![NSThread isMainThread])
+    {
+        [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:NO];
+        return;
+    }
+    
+    if (self.isCancelled) [self finish];
+    
+#ifdef LOG_OPERATIONS
+    NSLog(@"<%@> started.", self.name);
+#endif
+    
+    [self willChangeValueForKey:@"isExecuting"];
+    _isExecuting = YES;
+    [self didChangeValueForKey:@"isExecuting"];
+    
+    [self.twitterSearchRequest performRequestWithHandler:^(NSData *responseData, NSHTTPURLResponse *urlResponse, NSError *error) {
+        
+        if (self.isCancelled) [self finish];
+        
+        [self processTwitterSearchResultWithData:responseData
+                                     urlResponce:urlResponse
+                                           error:error];
+    }];
+}
+
+- (void)finish
+{
+#ifdef LOG_OPERATIONS
+    NSLog(@"operation <%@> finished. error: %@", self.name, self.error);
+#endif
+    
+    [self willChangeValueForKey:@"isExecuting"];
+    _isExecuting = NO;
+    [self didChangeValueForKey:@"isExecuting"];
+    
+    if (!self.isCancelled) {
+        if (self.error) {
+            if (self.errorCallback) self.errorCallback(self.error);
+        }
+        else {
+            if (self.successCallback) self.successCallback(self.searchResults, self.nextPageURL);
+        }
+    }
+    else {
+#ifdef LOG_OPERATIONS
+        NSLog(@"operation <%@> cancelled - finishing", self.name);
+#endif
+    }
+    
+    [self willChangeValueForKey:@"isFinished"];
+    _isFinished = YES;
+    [self didChangeValueForKey:@"isFinished"];
+}
+
+#pragma mark - Data processing
 
 - (void)processTwitterSearchResultWithData:(NSData *)responseData
                                urlResponce:(NSHTTPURLResponse *)urlResponse
                                      error:(NSError *)error
-                           successCallback:(SuccessTweetsSearchCallback)successCallback
-                             errorCallback:(TwitterErrorCallback)errorCallback
 {
     if ([urlResponse statusCode] == kTwitterRateLimitExceededErrorCode) {
-        if (errorCallback)
-            errorCallback([NSError errorWithDomain:kGeneralErrorDomain code:kTwitterRateLimitExceededErrorCode
-                                          userInfo:@{NSLocalizedDescriptionKey: @"Превышен лимит запросов"}]);
+        self.error = [NSError errorWithDomain:kGeneralErrorDomain code:kTwitterRateLimitExceededErrorCode
+                                     userInfo:@{NSLocalizedDescriptionKey: @"Превышен лимит запросов"}];
+        [self finish];
         return;
     }
     
     if (error) {
-        if (errorCallback) errorCallback(error);
+        self.error = error;
+        [self finish];
         return;
     }
     
@@ -98,44 +171,41 @@ static NSString * const kTweetNameKey = @"name";
         NSError *error = nil;
         id resultData = [NSJSONSerialization JSONObjectWithData:responseData options:NSJSONReadingMutableLeaves error:&error];
         
-        [self checkCancellation];
+        if (self.isCancelled) [self finish];
         
         if (error) {
-            if (errorCallback) errorCallback([self parsingError]);
+            self.error = error;
+            [self finish];
             return;
         }
         
-        [self parseSearchResultData:resultData
-                            success:successCallback
-                              error:errorCallback];
+        [self parseSearchResultData:resultData];
         
         responseData = nil;
-    }
-    else {
-        if (successCallback) successCallback(nil, nil);
     }
 }
 
 - (void)parseSearchResultData:(id)resultData
-                      success:(SuccessTweetsSearchCallback)successCallback
-                        error:(TwitterErrorCallback)errorCallback
 {
     @try {
         NSMutableArray *tweetSummaries = [NSMutableArray new];
-        NSString *nextPageURL;
         
         NSDictionary * searchMetadata = [resultData objectForKey:kTweetSearchMetadataKey];
         if ([NSObject isNotEmpty:searchMetadata]) {
             NSString * nextResults = [searchMetadata objectForKey:kTweetNextResultsKey];
-            if ([NSObject isNotEmpty:nextResults]) nextPageURL = nextResults;
+            if ([NSObject isNotEmpty:nextResults]) self.nextPageURL = nextResults;
         }
         
-        [self checkCancellation];
+        
+        
+        if (self.isCancelled) [self finish];
         
         NSArray *statuses = [resultData objectForKey:kTweetStatusesKey];
         if ([NSObject isNotEmpty:statuses]) {
             for (NSDictionary * status in statuses) {
-                [self checkCancellation];
+                
+                if (self.isCancelled) [self finish];
+                
                 TweetSummary *tweetSummary = [self tweetSummaryFromStatusDictionary:status];
                 if (tweetSummary) [tweetSummaries addObject:tweetSummary];
             }
@@ -143,10 +213,13 @@ static NSString * const kTweetNameKey = @"name";
         
         resultData = nil;
         
-        if (successCallback) successCallback(tweetSummaries, nextPageURL);
+        self.searchResults = tweetSummaries;
+        
+        [self finish];
     }
     @catch (NSException *exception) {
-        if (errorCallback) errorCallback([self parsingError]);
+        self.error = [self parsingError];
+        [self finish];
     }
 }
 
@@ -176,14 +249,9 @@ static NSString * const kTweetNameKey = @"name";
 }
 
 - (NSError*)parsingError {
-    return [NSError errorWithDomain:kGeneralErrorDomain code:kTwitterResponceParsingErrorCode
+    return [NSError errorWithDomain:kGeneralErrorDomain
+                               code:kTwitterResponceParsingErrorCode
                            userInfo:@{NSLocalizedDescriptionKey: @"Ошибка при обработке ответа сервера"}];
-}
-
-- (void)checkCancellation {
-    if (self.isCancelled) {
-        return;
-    }
 }
 
 @end

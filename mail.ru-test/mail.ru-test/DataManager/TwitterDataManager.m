@@ -112,10 +112,18 @@ static NSString * const kTweetsPerPage = @"20";
     TwitterSearchOperation *searchOperation = [[TwitterSearchOperation alloc] initWithRequest:twitterSearchRequest
                                                                               successCallback:successCallback
                                                                                 errorCallback:errorCallback];
+    searchOperation.name = [NSString stringWithFormat:@"Search by: %@", hashtag];
     [self.searchQueue addOperation:searchOperation];
+    
+#ifdef LOG_OPERATIONS
+    NSLog(@"Search queue: %@", self.searchQueue.operations);
+#endif
 }
 
 - (void)cancelCurrentSearch {
+#ifdef LOG_OPERATIONS
+    NSLog(@"Cancel: %@", self.searchQueue.operations);
+#endif
     [self.searchQueue cancelAllOperations];
 }
 

@@ -68,7 +68,6 @@
 		5CC06F821BC037EB008DD0A5 /* SystemVersion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SystemVersion.h; path = Utils/SystemVersion.h; sourceTree = "<group>"; };
 		5CC06F841BC06030008DD0A5 /* ErrorCodes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ErrorCodes.h; path = Utils/ErrorCodes.h; sourceTree = "<group>"; };
 		5CC06F9E1BC062FA008DD0A5 /* mail.ru-test-mockData.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "mail.ru-test-mockData.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		5CC06F9F1BC062FA008DD0A5 /* mail.ru-test copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "mail.ru-test copy-Info.plist"; path = "/iOS Dev/Projects/mail.ru-test/mail.ru-test/mail.ru-test copy-Info.plist"; sourceTree = "<absolute>"; };
 		5CC06FA01BC06B21008DD0A5 /* TwitterAPIURLBuilder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TwitterAPIURLBuilder.h; sourceTree = "<group>"; };
 		5CC06FA11BC06BB3008DD0A5 /* TwitterURLSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TwitterURLSource.h; path = TwitterService/TwitterURLSource.h; sourceTree = "<group>"; };
 		5CC06FA21BC06BB3008DD0A5 /* TwitterURLSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TwitterURLSource.m; path = TwitterService/TwitterURLSource.m; sourceTree = "<group>"; };
@@ -202,7 +201,6 @@
 			children = (
 				73C25C081BBEC9BA003D5F12 /* mail.ru-test */,
 				73C25C071BBEC9BA003D5F12 /* Products */,
-				5CC06F9F1BC062FA008DD0A5 /* mail.ru-test copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -489,7 +487,7 @@
 					"$(inherited)",
 					"MOCK_DATA=1",
 				);
-				INFOPLIST_FILE = "mail.ru-test copy-Info.plist";
+				INFOPLIST_FILE = "mail.ru-test/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.bondar.ivan.mail-ru-test";
@@ -505,7 +503,7 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = BrandAsset;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				INFOPLIST_FILE = "mail.ru-test copy-Info.plist";
+				INFOPLIST_FILE = "mail.ru-test/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "ru.bondar.ivan.mail-ru-test";
